@@ -22,7 +22,11 @@ export class AuthenticationService {
       data: { ...body, password },
     });
 
-    return res;
+    const loginRes = await this.loginUser(res.email, body.password);
+    return {
+      message: 'User registered successfully',
+      ...loginRes,
+    };
   }
 
   async loginUser(email: string, password: string) {

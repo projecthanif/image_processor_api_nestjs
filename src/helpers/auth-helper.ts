@@ -1,3 +1,4 @@
+import { SetMetadata } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 const hashPassword = async (
@@ -16,4 +17,7 @@ const verifyHashPassword = async (
   return isTrue;
 };
 
-export { hashPassword, verifyHashPassword };
+const IS_PUBLIC_KEY = 'isPublic';
+const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
+
+export { hashPassword, verifyHashPassword, Public, IS_PUBLIC_KEY };
