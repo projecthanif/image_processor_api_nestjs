@@ -1,98 +1,203 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Image Processor API
 
 ## Description
+This project is a backend system for an image processing service that provides comprehensive image management capabilities. Users can upload images, perform various transformations (resize, crop, rotate, filters, format conversion), and efficiently retrieve processed images. The service features JWT-based authentication, flexible storage options (local or Cloudinary), and is built with modern TypeScript and NestJS best practices.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+ Features
 
-```bash
-$ npm install
+- **User Authentication**: Secure JWT-based authentication system with user registration and login
+- **Image Upload**: Support for multiple image formats with local or Cloudinary storage
+- **Image Transformations**:
+  - Resize images with custom dimensions
+  - Crop images with precise coordinates
+  - Rotate images by any angle
+  - Apply filters (grayscale, sepia)
+  - Convert between formats (PNG, JPEG, WEBP, GIF, JP2, TIFF, AVIF)
+- **Image Management**: List, fetch, and manage user-specific images
+- **API Documentation**: Interactive Swagger/OpenAPI documentation
+- **Flexible Storage**: Choose between local file storage or Cloudinary integration
+
+## 🛠️ Tech Stack
+
+- **Framework**: [NestJS](https://nestjs.com/) v11
+- **Language**: TypeScript
+- **Database**: PostgreSQL with [Prisma ORM](https://www.prisma.io/)
+- **Image Processing**: [Sharp](https://sharp.pixelplumbing.com/)
+- **Cloud Storage**: [Cloudinary](https://cloudinary.com/)
+- **Authentication**: JWT (JSON Web Tokens)
+- **Validation**: class-validator & class-transformer
+- **API Documentation**: Swagger/OpenAPI
+- **Password Hashing**: bcrypt
+
+## 📦 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- Node.js (v18 or higher)
+- npm or yarn
+- PostgreSQL database
+- (Optional) Cloudinary account for cloud storage
+
+## 🚀 Installation
+
+1. Clone the repository:
+```image_processor_api/README.md#L1-3
+git clone <repository-url>
+cd image_processor_api
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+2. Install dependencies:
+```image_processor_api/README.md#L1-2
+npm install
 ```
 
-## Run tests
+3. Set up environment variables:
 
-```bash
-# unit tests
-$ npm run test
+Create a `.env` file in the root directory with the following variables:
 
-# e2e tests
-$ npm run test:e2e
+```image_processor_api/.env.example#L1-10
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/image_processor_db"
 
-# test coverage
-$ npm run test:cov
+# JWT Secret
+JWT_SECRET="your-secret-key-here"
+
+# File Storage (local or s3)
+FILE_STORAGE="local"  # or "s3" for Cloudinary
+
+# Cloudinary Configuration (required if FILE_STORAGE=s3)
+CLOUDINARY_CLOUD_NAME="your-cloud-name"
+CLOUDINARY_API_KEY="your-api-key"
+CLOUDINARY_API_SECRET="your-api-secret"
+
+# Server Port
+PORT=3000
 ```
 
-## Deployment
+4. Set up the database:
+```image_processor_api/README.md#L1-5
+# Generate Prisma Client
+npx prisma generate
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Run database migrations
+npx prisma migrate dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🏃 Running the Application
 
-## Resources
+```image_processor_api/README.md#L1-9
+# Development mode
+npm run start:dev
 
-Check out a few resources that may come in handy when working with NestJS:
+# Production mode
+npm run start:prod
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# Debug mode
+npm run start:debug
+```
 
-## Support
+The API will be available at `http://localhost:3000/api/v1`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 📚 API Documentation
 
-## Stay in touch
+Once the application is running, access the interactive Swagger documentation at:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```image_processor_api/README.md#L1-1
+http://localhost:3000/api/docs
+```
 
-## License
+## 🔑 API Endpoints
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Authentication
+- `POST /api/v1/auth/register` - Register a new user
+- `POST /api/v1/auth/login` - Login and receive JWT token
+
+### Images
+- `GET /api/v1/images` - Get all images for authenticated user
+- `POST /api/v1/images` - Upload a new image
+- `POST /api/v1/images/:id/transform` - Transform an image
+
+### Example: Image Transformation
+
+```image_processor_api/README.md#L1-24
+POST /api/v1/images/1/transform
+Content-Type: application/json
+Authorization: Bearer <your-jwt-token>
+
+{
+  "transformations": {
+    "resize": {
+      "width": 800,
+      "height": 600
+    },
+    "crop": {
+      "width": 400,
+      "height": 400,
+      "x": 0,
+      "y": 0
+    },
+    "rotate": 90,
+    "format": "webp",
+    "filters": {
+      "grayscale": true
+    }
+  }
+}
+```
+
+## 📁 Project Structure
+
+```image_processor_api/README.md#L1-18
+src/
+├── authentication/       # Authentication module (JWT, login, register)
+├── cloudinary-manager/   # Cloudinary integration service
+├── database/            # Database service (Prisma)
+├── helpers/             # Utility functions and constants
+├── image-manager/       # Image upload and transformation logic
+├── user/                # User management module
+├── app.module.ts        # Root application module
+└── main.ts              # Application entry point
+
+prisma/
+└── schema.prisma        # Database schema
+
+upload/                  # Local file storage directory
+transformed/             # Transformed images directory
+```
+
+## 🧪 Testing
+
+```image_processor_api/README.md#L1-11
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Test coverage
+npm run test:cov
+```
+
+## 🎨 Supported Image Formats
+
+- PNG
+- JPEG
+- WEBP
+- GIF
+- JP2
+- TIFF
+- AVIF
+
+## 🔐 Security Features
+
+- Password hashing with bcrypt
+- JWT-based authentication with expiration
+- Protected routes with authentication guards
+- Input validation with class-validator
+- SQL injection protection with Prisma
+
+
+## 📖 Project Origin
+
+This project is based on the [Image Processing Service challenge](https://roadmap.sh/projects/image-processing-service) from [roadmap.sh](https://roadmap.sh), a platform providing hands-on project ideas for developers to practice and improve their skills.
