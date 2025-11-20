@@ -23,6 +23,11 @@ import { join } from 'path';
       serveRoot: '/upload',
       exclude: ['/src'],
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', './transformed'),
+      serveRoot: '/transformed',
+      exclude: ['/src'],
+    }),
   ],
   controllers: [AppController],
   providers: [

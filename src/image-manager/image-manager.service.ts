@@ -1,8 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
+import { File } from 'buffer';
 import { Prisma } from 'generated/prisma';
+import sharp from 'sharp';
 import { CloudinaryManagerService } from 'src/cloudinary-manager/cloudinary-manager.service';
 import { DatabaseService } from 'src/database/database.service';
 import { deleteFile } from 'src/helpers/image-manager-helper';
+import { Transform } from './dto/image-manager.dto';
+import { ImageTransformer } from './image.transformer';
 
 @Injectable()
 export class ImageManagerService {
@@ -19,6 +23,13 @@ export class ImageManagerService {
       where: { user: { email } },
     });
 
+    return data;
+  }
+
+  async fetch(id: number, email: string) {
+    const data = await this.dbService.image.findUnique({
+      where: { id, user: { email } },
+    });
     return data;
   }
 
@@ -56,5 +67,15 @@ export class ImageManagerService {
     });
 
     return res;
+  }
+
+  async transform(id: number, email: string, body: Transform) {
+    const res = await this.fetch(id, email);
+    if (!res) {
+      throw new HttpException('This image resource does not exist', 404);
+    }
+    const imageTransformer = new ImageTransformer(body, res.link);
+    const transformerData = await imageTransformer.transform();
+    return transformerData;
   }
 }
